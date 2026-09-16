@@ -1,0 +1,12 @@
+# Beelogik owns this repository
+/.github/CODEOWNERS  @beelogik/beep-core-maintainers
+*       @beelogik/beep-core-maintainers
+
+# Uncomment if necessary.
+# Specifically require review for the CI workflow to a different team/user
+# (e.g., DevOps team will handle all workflows)
+# /.github/workflows/**    @devops-team
+#
+# Require review for the general information data of the website
+# (e.g., specific user will handle accurate website information)
+# /src/data/site.ts      @github-user
