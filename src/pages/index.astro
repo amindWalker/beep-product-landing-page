@@ -1,0 +1,33 @@
+---
+const serverMessage = "Astro server is ready!";
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Astro status</title>
+</head>
+<body>
+  <h1 id="status" data-message={serverMessage}>Loading...</h1>
+
+  <script>
+    const statusElement = document.querySelector('#status') as HTMLElement;
+    const serverMessage = statusElement?.dataset.message || "No status nessage found";
+
+    function updateStatusText() {
+      const currentState = document.readyState;
+      console.log(`Current page state: ${currentState}`);
+
+      const isLoaded = currentState === "complete";
+      if (statusElement) {
+        statusElement.innerText = isLoaded ? serverMessage : "Loading...";
+      }
+    }
+
+    updateStatusText();
+    // listen for any timing changes if it hasn't fully loaded yet
+    window.addEventListener('load', updateStatusText);
+  </script>
+</body>
+</html>

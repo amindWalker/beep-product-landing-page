@@ -1,0 +1,8 @@
+{
+  "name": "Beep · Low fees with same-day settlement for LATAM ⇄ China",
+  "short_name": "beep",
+  "icons": [{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }],
+  "theme_color": "#120E0B",
+  "background_color": "#120E0B",
+  "display": "standalone"
+}
