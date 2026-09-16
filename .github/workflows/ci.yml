@@ -8,9 +8,8 @@ on:
 
 jobs:
   build:
-    # Use the native ARM runner for Ubuntu 26.04 (currently a public preview)
     runs-on: ubuntu-26.04-arm
-    name: Build (ARM64) # <--- This is the name you'll add to your Ruleset
+    name: Build (ARM64)
 
     steps:
       - name: Checkout repository
@@ -19,8 +18,8 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest # Or pin to a specific version like '1.1.x'
-          cache: true # Automatically caches bun dependencies and lockfile
+          bun-version: latest
+          cache: true
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
