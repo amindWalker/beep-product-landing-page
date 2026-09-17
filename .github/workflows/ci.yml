@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
+# Explicitly restrict permissions to the minimum required by this workflow
+permissions:
+  contents: read # for actions/checkout to fetch the repository
+  actions: write # for actions/upload-artifact to upload the dist/ folder and bun manage dependency caching
+
 jobs:
   build:
     runs-on: ubuntu-26.04-arm
