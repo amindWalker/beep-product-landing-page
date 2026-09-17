@@ -1,33 +1,205 @@
 ---
-const serverMessage = "Astro server is ready!";
+import Base from '../layouts/Base.astro';
+import Logo from '../assets/b-logo-w-text-left.svg';
+import HeroMark from '../components/HeroMark.astro';
+import { brand, pricingTiers, providerComparison, marketStats, faqs } from '../data/site';
+import { buildStructuredData } from '../lib/structuredData';
+
+const siteUrl = Astro.site?.href ?? `${brand.url}/`;
+const structuredData = buildStructuredData(siteUrl);
+const buildYear = new Date().getFullYear();
+const footerLocations = brand.locations.join(' · ');
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Astro status</title>
-</head>
-<body>
-  <h1 id="status" data-message={serverMessage}>Loading...</h1>
+<Base {structuredData}>
+  <!-- NAV -->
+  <header class="sticky top-0 z-40 border-b border-[var(--border)] bg-ink/80 backdrop-blur">
+    <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6" aria-label="Main">
+      <a href="/" class="flex items-center gap-2 rounded-lg" aria-label={`${brand.name} home`}>
+        <Logo id="nav" class="h-8 w-auto" />
+        <span class="text-xl font-bold tracking-tight">{brand.name}</span>
+      </a>
+      <div class="hidden items-center gap-8 text-sm text-[var(--muted-foreground)] md:flex">
+        <a href="#how" class="nav-link">How it works</a>
+        <a href="#compare" class="nav-link">Compare</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#faq" class="nav-link">FAQ</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="#" class="btn px-4 rounded-b-lg" data-variant="ghost">Sign in</a>
+        <a href="#cta" class="btn" data-size="sm">Get started</a>
+      </div>
+    </nav>
+  </header>
 
-  <script>
-    const statusElement = document.querySelector('#status') as HTMLElement;
-    const serverMessage = statusElement?.dataset.message || "No status nessage found";
+  <main id="main">
+    <!-- HERO -->
+    <section class="relative overflow-hidden" aria-labelledby="hero-title">
+      <div class="pointer-events-none absolute -right-40 -top-40 h-[42rem] w-[42rem] rounded-full bg-brand-600/15 blur-3xl"></div>
+      <div class="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-28">
+        <div>
+          <span class="badge-outline">Brazil ⇄ China · Pix (BRL) → RMB (CNY)</span>
+          <h1 id="hero-title" class="mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-6xl">
+            Get paid in BRL<br /><span class="text-gradient">Settle in CNY today</span>
+          </h1>
+          <p class="mt-6 max-w-lg text-lg text-[var(--muted-foreground)]">
+            Beep lets Chinese merchants accept Pix across Latin America with up to zero take rate, 0.75% eFX spread, and same-day settlement. No hidden fees, no week-long waits.
+          </p>
+          <div class="mt-10 flex flex-wrap gap-3">
+            <a href="#cta" class="btn btn-lg">Start accepting Pix</a>
+            <a href="#pricing" class="btn btn-lg px-4 rounded-b-lg" data-variant="ghost">See pricing</a>
+          </div>
+          <dl class="mt-14 grid grid-cols-2 gap-6 border-t border-[var(--border)] pt-8 text-sm sm:grid-cols-4">
+            <div><dt class="text-[var(--muted-foreground)]">eFX spread</dt><dd class="mt-1 text-2xl font-semibold">0.75%</dd></div>
+            <div><dt class="text-[var(--muted-foreground)]">Take rate</dt><dd class="mt-1 text-2xl font-semibold">0%*</dd></div>
+            <div><dt class="text-[var(--muted-foreground)]">Settlement</dt><dd class="mt-1 text-2xl font-semibold">Same day</dd></div>
+            <div><dt class="text-[var(--muted-foreground)]">Payout fee</dt><dd class="mt-1 text-2xl font-semibold">$0</dd></div>
+          </dl>
+          <br>
+          <small class="text-muted-foreground">* 0.75% take rate is offered by subscription.</small>
+        </div>
+        <div class="flex justify-center md:justify-end"><HeroMark /></div>
+      </div>
+    </section>
 
-    function updateStatusText() {
-      const currentState = document.readyState;
-      console.log(`Current page state: ${currentState}`);
+    <!-- MARKET -->
+    <section class="border-y border-[var(--border)] bg-[var(--card)]/40" aria-label="Market context">
+      <div class="mx-auto grid max-w-6xl gap-2 px-6 py-12 sm:grid-cols-2 lg:grid-cols-4">
+        {marketStats.map(({ value, label }) => (
+          <div class="stat" tabindex="0">
+            <strong class="block text-4xl font-bold tracking-tight">{value}</strong>
+            {/* set:html is here to parse the <sup> with the source reference link */}
+            <p class="mt-1 text-sm text-muted-foreground" set:html={label} />
+          </div>
+        ))}
+      </div>
+    </section>
 
-      const isLoaded = currentState === "complete";
-      if (statusElement) {
-        statusElement.innerText = isLoaded ? serverMessage : "Loading...";
-      }
-    }
+    <!-- HOW IT WORKS -->
+    <section id="how" class="mx-auto max-w-6xl px-6 py-24" aria-labelledby="how-title">
+      <div class="max-w-2xl">
+        <h2 id="how-title" class="text-3xl font-bold tracking-tight md:text-4xl">One checkout, two currencies, zero waiting.</h2>
+        <p class="mt-4 text-[var(--muted-foreground)]">The loop in our mark is the product: BRL in on one side, RMB (CNY) out on the other, mirrored through Macao in real time.</p>
+      </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        <article class="card" tabindex="0">
+          <header><span class="badge">01</span><h3 class="mt-3 text-lg font-semibold">Shopper pays with Pix</h3></header>
+          <section><p class="text-[var(--muted-foreground)]">Pix QR or Pix copy-paste at your checkout. Confirmed in seconds, no international card required.</p></section>
+        </article>
+        <article class="card" tabindex="0">
+          <header><span class="badge">02</span><h3 class="mt-3 text-lg font-semibold">Beep routes and converts</h3></header>
+          <section><p class="text-[var(--muted-foreground)]">Our Rust routing core matches the BRL inflow against a pre-funded RMB pool at a fixed 0.75% spread, IOF itemised.</p></section>
+        </article>
+        <article class="card" tabindex="0">
+          <header><span class="badge">03</span><h3 class="mt-3 text-lg font-semibold">You receive RMB today</h3></header>
+          <section><p class="text-[var(--muted-foreground)]">Payout to your Bank of China account the same business day, with webhooks and a reconciled multi-currency ledger.</p></section>
+        </article>
+      </div>
+    </section>
 
-    updateStatusText();
-    // listen for any timing changes if it hasn't fully loaded yet
-    window.addEventListener('load', updateStatusText);
+    <!-- COMPARE -->
+    <section id="compare" class="border-y border-[var(--border)] bg-[var(--card)]/40" aria-labelledby="compare-title">
+      <div class="mx-auto max-w-6xl px-6 py-24">
+        <h2 id="compare-title" class="text-3xl font-bold tracking-tight md:text-4xl">What you pay today versus Beep.</h2>
+        <p class="mt-4 max-w-2xl text-[var(--muted-foreground)]">Total accumulated cost includes take rate, FX markup and fixed fees. Brazilian IOF applies equally to every provider.</p>
+        <div class="mt-10 overflow-x-auto rounded-xl border border-[var(--border)]">
+          <table class="table w-full text-left">
+            <thead><tr><th>Provider</th><th>Total cost</th><th>Settlement</th><th>Fixed payout fee</th></tr></thead>
+            <tbody>
+              {providerComparison.map(({ provider, totalCost, settlement, payoutFee, isBeep }) => (
+                <tr class:list={{ 'is-beep': isBeep }}>
+                  <td>{provider}</td><td>{totalCost}</td><td>{settlement}</td><td>{payoutFee}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="mx-auto max-w-6xl px-6 py-24" aria-labelledby="pricing-title">
+      <div class="max-w-2xl">
+        <h2 id="pricing-title" class="text-3xl font-bold tracking-tight md:text-4xl">Pricing that drops as you grow.</h2>
+        <p class="mt-4 text-[var(--muted-foreground)]">Every tier includes the same 0.75% eFX spread, $0 payout fee and same-day settlement. Rates are all-in.</p>
+      </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {pricingTiers.map(({ name, volume, rate, detail, audience, featured }) => (
+          <article class:list={['card', { 'ring-2 ring-brand-400': featured }]}>
+            <header>
+              <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold">{name}</h3>
+                {featured && <span class="badge">Popular</span>}
+              </div>
+              <p class="text-sm text-[var(--muted-foreground)]">{volume}</p>
+            </header>
+            <section>
+              <p class="text-4xl font-bold tracking-tight">{rate}</p>
+              <p class="mt-1 text-sm text-[var(--muted-foreground)]">{detail}</p>
+              <p class="mt-6 text-sm">{audience}</p>
+            </section>
+            <footer><a href="#cta" class:list={[featured ? 'btn' : 'btn', 'w-full']} >Choose {name}</a></footer>
+          </article>
+        ))}
+      </div>
+      <div class="card mt-8">
+        <section class="grid gap-6 md:grid-cols-3">
+          <div><p class="text-sm text-[var(--muted-foreground)]">Merchant at $30,000 / mo, traditional gateway</p><p class="mt-1 text-2xl font-semibold">$1,050 / mo</p></div>
+          <div><p class="text-sm text-[var(--muted-foreground)]">Same merchant on Beep subscription (annual)</p><p class="mt-1 text-2xl font-semibold text-gradient">$395 / mo</p></div>
+          <div><p class="text-sm text-[var(--muted-foreground)]">Saved every year</p><p class="mt-1 text-2xl font-semibold">$7,860</p></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="mx-auto max-w-3xl px-6 py-24" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="text-3xl font-bold tracking-tight md:text-4xl">Questions</h2>
+      <section class="accordion mt-10">
+        {faqs.map(({ question, answer }) => (
+          <details>
+            <summary>{question}</summary>
+            <section><p class="text-[var(--muted-foreground)]">{answer}</p></section>
+          </details>
+        ))}
+      </section>
+    </section>
+
+    <!-- CTA -->
+    <section id="cta" class="mx-auto max-w-6xl px-6 pb-24" aria-labelledby="cta-title">
+      <div class="card overflow-hidden">
+        <section class="grid items-center gap-8 md:grid-cols-[1fr_auto]">
+          <div>
+            <h2 id="cta-title" class="text-2xl font-bold tracking-tight md:text-3xl">Open your Beep account</h2>
+            <p class="mt-2 text-[var(--muted-foreground)]">Onboarding takes one business day. We will send your API keys and instructions.</p>
+          </div>
+          <form class="flex w-full flex-col gap-3 sm:flex-row md:w-[28rem]" onsubmit="event.preventDefault()">
+            <label class="sr-only label" for="email">Work email</label>
+            <input id="email" class="input" type="email" autocomplete="email" placeholder="you@store.cn" required />
+            <button class="btn" type="submit">Request access</button>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-[var(--border)]">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-6 py-10 text-sm text-[var(--muted-foreground)] md:flex-row">
+      <div class="flex items-center gap-2">
+        <Logo id="footer" class="h-6 w-auto" />
+        <span class="font-semibold text-cream">{brand.name}</span><span>· eFX</span>
+      </div>
+      <nav class="flex gap-6" aria-label="Legal">
+        <a href="#" class="nav-link">Terms</a>
+        <a href="#" class="nav-link">Privacy</a>
+        <a href="#" class="nav-link">Status</a>
+      </nav>
+      <p>© <time id="copyright-year" datetime={String(buildYear)}>{buildYear}</time> {brand.name}. {footerLocations}</p>
+    </div>
+  </footer>
+
+  <script is:inline>
+    const yearElement = document.getElementById('copyright-year');
+    const currentYear = String(new Date().getFullYear());
+    yearElement.textContent = currentYear;
+    yearElement.dateTime = currentYear;
   </script>
-</body>
-</html>
+</Base>
