@@ -32,10 +32,22 @@ export const providerComparison = [
 ];
 
 export const marketStats = [
-  { value: '184M', label: 'Pix users, 86% of Brazil’s population<sup><a href="https://wikipedia.org" target="_blank" id="reference-1">1</a></sup>' },
-  { value: '60M', label: 'Brazilian adults without a credit card' },
-  { value: '$171B', label: 'Brazil–China trade corridor, 2025' },
-  { value: '82%', label: 'Cart abandonment in Brazil, driven by payment friction' }
+  { value: '184M', label: `Pix users, 86% of Brazil’s adult population <sup><a
+    style="color: red"
+    href="https://febrabantech.com/noticias/arquitetura-hibrida-futuro-do-pix-e-integrar-nao-substituir#:~:text=Hoje%2C%2086%25%20da%20popula%C3%A7%C3%A3o%20adulta%20brasileira%20usa%20o%20Pix"
+    target="_blank" id="reference-1"> 1</a></sup>` },
+  { value: '60M', label: `Brazilian adults without a credit card <sup><a
+    style="color: red"
+    href="https://www.cnnbrasil.com.br/economia/money/macroeconomia/galipolo-60-mi-que-nao-possuem-cartao-terao-servicos-com-pix-automatico/#:~:text=Pix%20Autom%C3%A1tico%20possibilitar%C3%A1%20que%20cerca%20de%2060%20milh%C3%B5es%20de%20usu%C3%A1rios%20que%20n%C3%A3o%20possuem%20cart%C3%A3o%20de%20cr%C3%A9dito%20tenham%20acesso%20a%20servi%C3%A7os"
+    target="_blank" id="reference-1"> 2</a></sup>` },
+  { value: '$171B', label: `Brazil–China trade corridor, 2025 <sup><a
+    style="color: red"
+    href="https://cbcde.org.br/comercio-brasil-china-bate-recorde-e-chega-a-us-171-bilhoes-em-2025/#:~:text=e%20chega%20a-,US%24%20171%20bilh%C3%B5es%20em%202025,-O%20com%C3%A9rcio%20entre"
+    target="_blank" id="reference-1"> 3</a></sup>` },
+  { value: '82%', label: `Cart abandonment, driven by payment friction <sup><a
+    style="color: red"
+    href="https://fabricaresultados.com.br/2026/04/20/abandono-de-carrinho-no-e-commerce-em-2026-como-recuperar-ate-35-das-vendas-perdidas/#:~:text=abandono%20entre%2070%25%20e%2082%25"
+    target="_blank" id="reference-1"> 4</a></sup>` },
 ];
 
 export const faqs = [
