@@ -1,0 +1,82 @@
+---
+import Logo from '../assets/b-logo-w-text-left.svg';
+import { brand } from '../data/site';
+
+const MINIMUM_VISIBLE_MS = 3000; // the "curtain" splash
+const MAXIMUM_VISIBLE_MS = 8000; // timeout to never block longer than this if `load` stalls
+const SESSION_KEY = 'beep:splash-seen';
+---
+<div id="splash" class="splash" role="status" aria-label={`Loading ${brand.name}`}>
+  <div class="splash__content">
+    <Logo id="splash" class="splash__logo" />
+    <p class="splash__wordmark">{brand.name}</p>
+    <p class="splash__tagline">{brand.tagline}</p>
+    <div class="splash__progress" style={`--duration:${MINIMUM_VISIBLE_MS}ms`}></div>
+  </div>
+</div>
+
+<!-- Plain CSS (not Tailwind) to ensure the curtain is full-screen before anything else -->
+<style is:global>
+  .splash {
+    position: fixed; inset: 0; z-index: 100;
+    display: grid; place-items: center;
+    background: #120E0B; color: #FFF6EA;
+    transition: opacity var(--t, .2s ease-in-out);
+  }
+  .splash.is-leaving { opacity: 0; pointer-events: none; }
+  html.splash-seen .splash { display: none; }
+
+  .splash__content { display: flex; flex-direction: column; align-items: center; gap: 2rem; }
+  .splash__logo { height: 10rem; width: auto; filter: drop-shadow(0 0 48px rgba(255, 158, 44, .25)); animation: splash-rise .2s ease-in-out both; }
+  .splash__wordmark { font-size: 2.25rem; font-weight: 700; letter-spacing: -.02em; animation: splash-rise .2s ease-in-out .1s both; }
+  .splash__tagline { margin-top: -1.5rem; font-size: .75rem; letter-spacing: .3em; text-transform: uppercase; opacity: .6; animation: splash-rise .2s ease-in-out .15s both; }
+  .splash__progress { height: 2px; width: 10rem; overflow: hidden; border-radius: 999px; background: rgba(255, 246, 234, .15); }
+  .splash__progress::after {
+    content: ''; display: block; height: 100%; width: 0;
+    background: linear-gradient(90deg, #FF9E2C, #F1580A);
+    animation: splash-fill var(--duration) linear both;   /* tracks elapsed time, so linear */
+  }
+
+  @keyframes splash-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes splash-fill { to { width: 100%; } }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .splash__logo, .splash__wordmark, .splash__tagline { animation: none; }
+    .splash__progress::after { animation: none; width: 100%; }
+  }
+</style>
+
+<script define:vars={{ MINIMUM_VISIBLE_MS, MAXIMUM_VISIBLE_MS, SESSION_KEY }}>
+  const splash = document.getElementById('splash');
+  const page = document.documentElement;
+  const isForced = new URLSearchParams(location.search).has('splash');
+
+  const hasBeenSeen = () => { try { return sessionStorage.getItem(SESSION_KEY) === '1'; } catch { return false; } };
+  const rememberSeen = () => { try { sessionStorage.setItem(SESSION_KEY, '1'); } catch { /* private mode */ } };
+  const unlockScroll = () => page.classList.remove('splash-open');
+  const after = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const whenPageLoaded = () =>
+    document.readyState === 'complete'
+      ? Promise.resolve()
+      : new Promise((resolve) => addEventListener('load', resolve, { once: true }));
+
+  const dismiss = () => {
+    rememberSeen();
+    unlockScroll();
+    splash.classList.add('is-leaving');
+    splash.addEventListener('transitionend', () => splash.remove(), { once: true });
+    setTimeout(() => splash.isConnected && splash.remove(), 400);
+  };
+
+  if (!splash) {
+    unlockScroll();
+  } else if (hasBeenSeen() && !isForced) {
+    splash.remove();
+    unlockScroll();
+  } else {
+    Promise.race([
+      Promise.all([whenPageLoaded(), after(MINIMUM_VISIBLE_MS)]),
+      after(MAXIMUM_VISIBLE_MS)
+    ]).then(dismiss);
+  }
+</script>

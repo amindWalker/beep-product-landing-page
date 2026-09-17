@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@import "basecoat-css";
+
+/* Beep theme tokens for Tailwind v4 */
+@theme {
+  --color-brand-400: #FF9E2C;
+  --color-brand-600: #F1580A;
+  --color-ink: #120E0B;
+  --color-cream: #FFF6EA;
+}
+
+/* Basecoat tokens mapped to the Beep palette */
+.dark {
+  --background: #120E0B;          --foreground: #FFF6EA;
+  --card: #1A1410;                --card-foreground: #FFF6EA;
+  --popover: #1A1410;             --popover-foreground: #FFF6EA;
+  --primary: #FF9E2C;             --primary-foreground: #120E0B;
+  --secondary: #261D16;           --secondary-foreground: #FFF6EA;
+  --muted: #261D16;               --muted-foreground: #B8A899;
+  --accent: #2E2219;              --accent-foreground: #FFF6EA;
+  --border: #33271E;              --input: #33271E;    --ring: #FF9E2C;
+  --radius: .75rem;
+}
+
+/* Global element defaults */
+:root {
+  --t: .2s ease-in-out;
+}
+
+html { scroll-behavior: smooth; }
+html.splash-open { overflow: hidden; }
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #FF9E2C, #F1580A);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

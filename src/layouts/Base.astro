@@ -1,0 +1,129 @@
+---
+import Seo from '../components/Seo.astro';
+import Splash from '../components/Splash.astro';
+import { brand } from '../data/site';
+import faviconUrl from '../assets/b-logo-w-text-left.svg?url';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  structuredData?: Record<string, unknown>[];
+}
+const {
+  title = `${brand.name} · Pix (BRL) to RMB (CNY) settlement in seconds | Cross-border eFX for LATAM ⇄ China`,
+  description = brand.description,
+  image,
+  structuredData
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en" class="dark splash-open">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#120E0B" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content={brand.name} />
+
+    <Seo {title} {description} {image} {structuredData} />
+
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <script is:inline>
+      try { // A Beep brand splash will run if this is the first loaded session
+        const alreadySeen = sessionStorage.getItem('beep:splash-seen') === '1';
+        const forced = new URLSearchParams(location.search).has('splash');
+        if (alreadySeen && !forced) document.documentElement.classList.replace('splash-open', 'splash-seen');
+      } catch {}
+    </script>
+
+    <script>
+      import 'basecoat-css/all'; // for local Basecoat UI runtime (bundled from node_modules)
+    </script>
+
+    <!-- TODO: some of this global selectors are harder to make in TailwindCSS. Research how to simplify it -->
+    <style is:global>
+      :where(a, button, summary, input, textarea, select, [tabindex]) {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+      :where(a, button, summary, input, textarea, select, [tabindex]):focus-visible {
+        outline: 2px solid var(--ring);
+        outline-offset: 3px;
+      }
+
+      [class^="btn"], [class*=" btn"] {
+        transition: transform var(--t), box-shadow var(--t), filter var(--t),
+                    background-color var(--t), color var(--t);
+      }
+      @media (hover: hover) {
+        [class^="btn"]:hover, [class*=" btn"]:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 10px 28px -14px rgba(255, 158, 44, .6);
+        }
+      }
+      [class^="btn"]:active, [class*=" btn"]:active { transform: translateY(0) scale(.97); }
+
+      .card { transition: transform var(--t), box-shadow var(--t); }
+      @media (hover: hover) {
+        .card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 28px 56px -32px rgba(241, 88, 10, .5);
+          outline: 1px solid orangered;
+        }
+      }
+      .card:active { transform: translateY(-1px) scale(.995); }
+
+      .nav-link { position: relative; padding-block: .25rem; transition: color var(--t); }
+      .nav-link::after {
+        content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
+        background: linear-gradient(90deg, #FF9E2C, #F1580A);
+        transform: scaleX(0); transform-origin: left; transition: transform var(--t);
+      }
+      .nav-link:hover, .nav-link:focus-visible { color: var(--foreground); }
+      .nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); }
+      .nav-link:active { color: var(--primary); }
+
+      .stat { border-radius: var(--radius); padding: 1.25rem;
+              transition: transform var(--t), background-color var(--t); }
+      .stat strong { transition: color var(--t); }
+      @media (hover: hover) {
+        .stat:hover { background: var(--accent); transform: translateY(-2px); }
+        .stat:hover strong { color: var(--primary); }
+      }
+      .stat:active { transform: scale(.98); }
+
+      .accordion summary { cursor: pointer; transition: color var(--t), padding-left var(--t); }
+      .accordion summary:hover, .accordion details[open] > summary { color: var(--primary); }
+      .accordion summary:active { padding-left: .25rem; }
+
+      .input { transition: box-shadow var(--t), background-color var(--t); }
+      .input:hover { box-shadow: 0 0 0 2px color-mix(in oklab, var(--primary) 18%, transparent); }
+      .input:focus { outline: none; box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 25%, transparent); }
+
+      .table tbody tr { transition: background-color var(--t); }
+      .table tbody tr:hover { background: var(--accent); }
+      .table tr.is-beep {
+        background: color-mix(in oklab, var(--primary) 10%, transparent);
+        font-weight: 600;
+      }
+
+      @media (prefers-reduced-motion: no-preference) {
+        *, *::before, *::after {
+          transition-duration: .01ms !important;
+          animation-duration: .01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-dvh antialiased">
+    <Splash />
+    <slot />
+  </body>
+</html>
