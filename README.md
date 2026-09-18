@@ -53,7 +53,7 @@ In `src/layouts/Base.astro`, the Basecoat runtime is bundled via:
 
 ```astro
 <script>
-  import 'basecoat-css/dist/js/all.min.js';
+  import 'basecoat-css/all';
 </script>
 ```
 
