@@ -28,7 +28,7 @@ export const providerComparison = [
   { provider: 'Card acquirers', totalCost: '~6.0% to 9.0%', settlement: 'D+3 to D+7', payoutFee: '$0.30' },
   { provider: 'Cross-border PSPs', totalCost: '~4.5% to 6.5%', settlement: 'D+1 to D+3', payoutFee: '$0.20' },
   { provider: 'Wise + gateway', totalCost: '~2.0% to 4.5%', settlement: '1 to 3 days', payoutFee: 'Variable' },
-  { provider: brand.name, totalCost: '1.50% to 2.75% (0.75% on subscription)', settlement: 'Seconds', payoutFee: '$0.00', isBeep: true }
+  { provider: brand.name, totalCost: '1.50% to 2.75% (0.75% via subscription)', settlement: 'Seconds', payoutFee: '$0.00', isBeep: true }
 ];
 
 export const marketStats = [
@@ -55,5 +55,5 @@ export const faqs = [
   { question: 'What is the 0.75% eFX spread?', answer: 'A flat, pass-through spread on the BRL to RMB conversion. It is identical on every tier and itemised on every settlement statement, together with the statutory Brazilian IOF (0.38%).' },
   { question: 'Why Pix instead of cards?', answer: 'About 60 million Brazilian adults have no credit card, while roughly 184 million use Pix. Pix checkout removes the card wall behind Brazil’s 82% cart abandonment rate.' },
   { question: 'Do you support instalments?', answer: 'Yes, soon we will enable Pix Installments (Pix Parcelado) to be offered and  lets shoppers split a purchase into instalments while you are still full settled upfront.' },
-  { question: 'Is Beep regulated?', answer: 'Yes. Phase 1 operates under a licensed BaaS partner in Brazil. Beep is filing its own Central Bank of Brazil Payment Institution application and follows LGPD in Brazil and PIPL in China.' }
+  { question: 'Is Beep regulated?', answer: 'Yes. Phase 1 operates through a licensed BaaS partner in Brazil. Beep is filing its own Central Bank of Brazil Payment Institution application for Phase 2. We also comply with the LGPD in Brazil and the PIPL in China.' }
 ];
